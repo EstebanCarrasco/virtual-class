@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="styleindex.css">
+</head>
+<body>
+    <nav>
+       
+        <a href="#"class="nav-enlace">Contacto</a>
+
+    </nav>
+    
+  
+</body>   
+
+<script>
+    async function verificarToken() {
+        const token = localStorage.getItem('token');
+        if(token) { 
+            const respuesta = await fetch('/api/users/verifyToken', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            const datos = await respuesta.json();
+
+            if(datos.auth) {
+                //crea elemento de logout
+                const logoutElement = document.createElement('a');
+                //setearle el href
+                logoutElement.setAttribute('href','/');
+                //setear el texto del elemento
+                logoutElement.textContent = 'Logout';
+                //agregarle clase de css
+                logoutElement.classList.add('nav-enlace');
+
+                //agregar comportamiento cuando hace click
+                logoutElement.addEventListener('click',function(e){
+                    localStorage.removeItem('token');
+                    window.location.href = '/';
+                })
+
+                    //agregar el elemento al nav
+                    document.querySelector('nav').prepend(logoutElement);
+                                               
+            } else {
+                const loginElement = document.createElement('a');
+                loginElement.setAttribute('href','/login');
+                loginElement.textContent = 'Login';
+                loginElement.classList.add('nav-enlace');
+                document.querySelector ('nav').prepend(loginElement);
+
+                const registerElement = document.createElement('a');
+                registerElement.setAttribute('href','/registro');
+                registerElement.textContent = 'Registrar';
+                registerElement.classList.add('nav-enlace');
+                document.querySelector ('nav').prepend(registerElement);
+            }
+        } else {
+            const loginElement = document.createElement('a');
+                loginElement.setAttribute('href','/login');
+                loginElement.textContent = 'Login';
+                loginElement.classList.add('nav-enlace');
+                document.querySelector ('nav').prepend(loginElement);
+
+                const registerElement = document.createElement('a');
+                registerElement.setAttribute('href','/registro');
+                registerElement.textContent = 'Registrar';
+                registerElement.classList.add('nav-enlace');
+                document.querySelector ('nav').prepend(registerElement);
+        }
+    }
+
+    verificarToken();
+
+</script>
+
+</html>

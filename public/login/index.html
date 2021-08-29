@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section class="form-register">
+        <h4>Login de Usuario</h4>
+       
+        <form>
+            <input class="controls" type="email" name="correo" id="correo" required placeholder="Ingrese su Correo">
+            <input class="controls" type="password" name="correo" id="contrasena" required placeholder="Ingrese su Contraseña">
+            
+        
+            <p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>
+            <input class="botons" type="submit" value="Ingresar">
+            <p><a href="/registro">¿No tengo Cuenta?</a></p> 
+            <p><a href="/index.html">Regresar . . .</a></p>
+            
+
+        </form>
+      </section>
+</body>
+
+<script>
+    document.querySelector('form').addEventListener('submit', login);
+
+    async function login(e) {
+        e.preventDefault();
+        //Agarrar valores de los inputs
+        const email =  document.getElementById('correo').value;
+        const password = document.getElementById('contrasena').value;
+
+        //Armar body
+        const body = {
+            email: email,
+            password: password,
+        };
+
+        //Hacer llamada al backend
+        const respuesta = await fetch('/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+
+        //Obtener datos de la llamada
+        const datos = await respuesta.json();
+
+        //Guardar token
+        localStorage.setItem('token', datos.token);
+
+        //redireccionar
+        window.location.href = '/';
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-image: url('fondos/12595-tecnologia.jpg');
+  }
+  
+
+.nav-enlace{
+    display: inline-block;
+    background:salmon;
+    color:#fff;
+    padding: 10px 30px;
+    text-decoration: none;
+    margin-right: 10px;
+    
+  }
+
+  .nav-enlace:hover{
+      background: rosybrown;
+  }
+
+  nav{
+      
+      padding: 10px;
+  }
