@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+</head>
+<body>
+    Esta pagina solo pueden acceder admins
+
+    <ul id="lista-usuarios">
+
+    </ul>
+</body>
+
+<script>
+      async function verificarToken() {
+        const token = localStorage.getItem('token');
+        if(token) { 
+            const respuesta = await fetch('/api/users/verifyToken', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            const datos = await respuesta.json();
+
+            if(datos.auth && datos.tipo_usuario === 'Administrador') {
+                obtenerUsuarios();
+            } else {
+                window.location.href = "/"
+            }
+        } else {
+            window.location.href = "/"
+        }
+    }
+
+    verificarToken();
+
+    async function obtenerUsuarios() {
+        const token = localStorage.getItem('token');
+        //Obtener usuarios
+        const respuesta = await fetch('/api/users/usuarios', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+        const datos = await respuesta.json();
+        console.log(datos)
+
+        //Crear un elemento en la lista para cada usuario
+        datos.usuarios.forEach(usuario => {
+            const usuarioElemento = document.createElement('li');
+            usuarioElemento.textContent = usuario.nombre +' - '+ usuario.email;
+            document.getElementById('lista-usuarios').appendChild(usuarioElemento);
+        })
+    }
+</script>
+
+</html>

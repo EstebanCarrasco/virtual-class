@@ -26,7 +26,7 @@ router.post('/register',
 })
 
 
-router.get('/usuario',
+router.get('/usuarios', auth,
     async (req, res) => {
         try {            
             const response = await pool.query('SELECT * FROM usuario');
@@ -48,17 +48,17 @@ router.post('/login',
 
         const { email, password } = req.body;
         try {
-            const user = await pool.query('SELECT id, usuario, email, contrasena FROM usuario WHERE email = $1', [email]);
+            const user = await pool.query('SELECT id, usuario, email, contrasena, tipo_usuario FROM usuario WHERE email = $1', [email]);
             const validPassword = await bcrypt.compare(password, user.rows[0].contrasena);
     
             if(!validPassword) {
                 return res.status(400).send({'error': 'Invalid credentials'});
             }
-            
             const jwtPayload = {
                 id: user.rows[0].id,
                 username: user.rows[0].username,
                 email: user.rows[0].email,
+                tipo_usuario: user.rows[0].tipo_usuario
             }
             const token = await jwt.sign(jwtPayload, process.env.JWT_SECRET);
 
@@ -82,7 +82,8 @@ router.get('/verifyToken', auth, (req, res) => {
     try {
         res.json({
             auth: true,
-            username: req.user.username
+            username: req.user.username,
+            tipo_usuario: req.user.tipo_usuario
         })
     } catch(error) {
         console.error(err.message);
