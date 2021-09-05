@@ -5,13 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuarios</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     Esta pagina solo pueden acceder admins
 
-    <ul id="lista-usuarios">
-
-    </ul>
+    <section id="lista-usuarios">
+        <h1>Listado Usuarios</h1>
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Tipo de Usuario</th>
+                <th>Acciones</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+           
+        </table>
+    </section>
 </body>
 
 <script>
@@ -57,7 +72,7 @@
         //Crear un elemento en la lista para cada usuario
         datos.usuarios.forEach(usuario => {
             const usuarioElemento = document.createElement('li');
-            usuarioElemento.textContent = usuario.nombre +' - '+ usuario.email;
+            usuarioElemento.textContent = usuario.nombre +' - '+ usuario.email +' - '+ usuario.tipo_usuario;
             document.getElementById('lista-usuarios').appendChild(usuarioElemento);
         })
     }

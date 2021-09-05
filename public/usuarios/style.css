@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  #lista-usuarios h1{
+      font-size: 35px;
+      display: inline-block;
+  }
+
+  table{
+      border-collapse: collapse;
+      font-size: 12pt;
+      font-family: 'arial';
+      width: 100%;
+  }
+
+  table th{
+      text-align: left;
+      padding: 10px;
+      background: #3d7ba8;
+      color:#FFF;
+  }
+
+  table tr:nth-child(odd){
+      background: 10px;
+  }
+  table td{
+      padding: 10px;
+  }
+
