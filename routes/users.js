@@ -25,7 +25,7 @@ router.post('/register',
         }
 })
 
-
+//a esta ruta solo acceden usuarios logeados 
 router.get('/usuarios', auth,
     async (req, res) => {
         try {            
