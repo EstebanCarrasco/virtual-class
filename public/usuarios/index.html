@@ -12,7 +12,7 @@
 
     <section id="lista-usuarios">
         <h1>Listado Usuarios</h1>
-        <table>
+        <table id="tabla-usuarios">
             <tr>
                 <th>Nombre</th>
                 <th>Email</th>
@@ -20,9 +20,7 @@
                 <th>Acciones</th>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                
             </tr>
            
         </table>
@@ -72,9 +70,46 @@
 
         //Crear un elemento en la lista para cada usuario
         datos.usuarios.forEach(usuario => {
-            const usuarioElemento = document.createElement('li');
-            usuarioElemento.textContent = usuario.nombre +' - '+ usuario.email +' - '+ usuario.tipo_usuario;
-            document.getElementById('lista-usuarios').appendChild(usuarioElemento);
+            //Crear una nueva linea en la tabla
+            const lineaTabla = document.createElement('tr');
+            
+            //Agregar la columna de nombre
+            const columnaNombre = document.createElement('td');
+            columnaNombre.textContent = usuario.nombre;
+            lineaTabla.appendChild(columnaNombre);
+
+            //Agregar la columna de mail
+            const columnaEmail = document.createElement('td');
+            columnaEmail.textContent = usuario.email;
+            lineaTabla.appendChild(columnaEmail);
+
+            //Agregar la columna de tipo
+            const columnaTipo = document.createElement('td');
+            columnaTipo.textContent = usuario.tipo_usuario;
+            lineaTabla.appendChild(columnaTipo);
+
+            //Crear el boton de editar
+            const botonEditar = document.createElement('button');
+            botonEditar.textContent = 'Editar';
+
+            //Agregar funcionalidad al boton
+            botonEditar.onclick = function(e) {
+                //manejar logica del click del boton
+                if(usuario.tipo_usuario === "Administrador") {
+                    window.location.href = "/usuarios/modifica_administrador.html"
+                } else if (usuario.tipo_usuario === "Alumno") {
+                    window.location.href = "/usuarios/modifica_alumno.html"
+                }
+            }
+ 
+            //Agregar la columna de acciones
+            const columnaAcciones = document.createElement('td');
+            //Agregar el boton a la columna de acciones
+            columnaAcciones.appendChild(botonEditar);
+            lineaTabla.appendChild(columnaAcciones);
+
+            //Agregar la nueva linea a la tabla
+            document.getElementById('tabla-usuarios').appendChild(lineaTabla);
         })
     }
 </script>
