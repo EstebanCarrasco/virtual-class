@@ -92,20 +92,32 @@
             const botonEditar = document.createElement('button');
             botonEditar.textContent = 'Editar';
 
-            //Agregar funcionalidad al boton
-            botonEditar.onclick = function(e) {
+             
+            //Agregar funcionalidad al boton editar
+            botonEditar.onclick = function(e) 
+            {
                 //manejar logica del click del boton
-                if(usuario.tipo_usuario === "Administrador") {
+                if(usuario.tipo_usuario === "Administrador") 
+                {
                     window.location.href = "/usuarios/modifica_administrador.html"
-                } else if (usuario.tipo_usuario === "Alumno") {
+                } else if (usuario.tipo_usuario === "Alumno") 
+                {
                     window.location.href = "/usuarios/modifica_alumno.html"
                 }
+                // else if (usuario.tipo_usuario === "Profesor") 
+               //{
+               // window.location.href = "/usuarios/modifica_profesor.html"
+               //}
             }
- 
+           //Crear el boton de eliminar
+             //const botonEliminar = document.createElement('button');
+             //botonEliminar.textContent = 'Eliminar';
+           
             //Agregar la columna de acciones
             const columnaAcciones = document.createElement('td');
             //Agregar el boton a la columna de acciones
             columnaAcciones.appendChild(botonEditar);
+           // columnaAcciones.appendChild(botonEliminar);
             lineaTabla.appendChild(columnaAcciones);
 
             //Agregar la nueva linea a la tabla
