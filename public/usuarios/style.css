@@ -105,3 +105,17 @@
       padding: 10px;
   }
 
+botonEditar{
+    background: salmon;
+    display: block;
+}
+p a:link, a:visited, a:active{
+  	display:block;
+	font-weight:bold;
+	color:#FFFFFF;
+	background-color:salmon;
+	width:120px;
+	text-align:center;
+	padding:4px;
+	text-decoration:none;
+}

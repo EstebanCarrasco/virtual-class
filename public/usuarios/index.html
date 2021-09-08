@@ -15,6 +15,7 @@
         <table id="tabla-usuarios">
             <tr>
                 <th>Nombre</th>
+                <th>Apellido</th>
                 <th>Email</th>
                 <th>Tipo de Usuario</th>
                 <th>Acciones</th>
@@ -78,6 +79,11 @@
             columnaNombre.textContent = usuario.nombre;
             lineaTabla.appendChild(columnaNombre);
 
+            //Agregar la columna de apellido
+            const columnaApellido = document.createElement('td');
+            columnaApellido.textContent = usuario.apellido;
+            lineaTabla.appendChild(columnaApellido);
+
             //Agregar la columna de mail
             const columnaEmail = document.createElement('td');
             columnaEmail.textContent = usuario.email;
@@ -91,6 +97,7 @@
             //Crear el boton de editar
             const botonEditar = document.createElement('button');
             botonEditar.textContent = 'Editar';
+            
 
              
             //Agregar funcionalidad al boton editar
@@ -104,20 +111,21 @@
                 {
                     window.location.href = "/usuarios/modifica_alumno.html"
                 }
-                // else if (usuario.tipo_usuario === "Profesor") 
-               //{
-               // window.location.href = "/usuarios/modifica_profesor.html"
-               //}
+                 else if (usuario.tipo_usuario === "Profesor") 
+                {
+                window.location.href = "/usuarios/modifica_profesor.html"
+                }
             }
            //Crear el boton de eliminar
-             //const botonEliminar = document.createElement('button');
-             //botonEliminar.textContent = 'Eliminar';
-           
+             const botonEliminar = document.createElement('button');
+             botonEliminar.textContent = 'Eliminar';
+            
+             
             //Agregar la columna de acciones
             const columnaAcciones = document.createElement('td');
             //Agregar el boton a la columna de acciones
             columnaAcciones.appendChild(botonEditar);
-           // columnaAcciones.appendChild(botonEliminar);
+            columnaAcciones.appendChild(botonEliminar);
             lineaTabla.appendChild(columnaAcciones);
 
             //Agregar la nueva linea a la tabla
