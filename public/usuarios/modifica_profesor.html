@@ -19,15 +19,27 @@
              <input class="controls" type="text" name="cedula" id="cedula" placeholder="Ingrese su CI">
              <input class="controls" type="int" name="telefono" id="telefono" placeholder="Ingrese su Telefono">
              <input class="controls" type="int" name="valor_hora" id="valor_hora" placeholder="Ingrese Valor Hs. de la Materia">
-             <input class="controls" type="text" name="materia" id="materia" placeholder="Ingrese su Materia ">
              <input class="controls" type="text" name="experiencia" id="experiencia" placeholder="Ingrese su Experiencia ">
              
-                <p>Tipo de Usuario</p>
-             <select name="tipo_usuario" id="tipo_usuario">
-                <option value="Administrador">Administrador</option>
-                <option value="Alumno" selected>Alumno</option>
-                <option value="Profesor">Profesor</option>
+            
+             <div id="materia">
+               <p>Materia</p>
+             <select name="materia" id="materia">
+                <option value="Matematica">Matematica</option>
+                <option value="Fisica" selected>Fisica</option>
+                <option value="Quimica">Quimica</option>
               </select>
+
+            </div>
+             
+           <div id="tipo_usuario">
+                <p>Usuario</p>
+                 <select name="tipo_usuario" id="tipo_usuario">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Alumno" selected>Alumno</option>
+                    <option value="Profesor">Profesor</option>
+                 </select>
+            </div>
         
                 
                 <input class="botons" type="submit" value="Registrar">

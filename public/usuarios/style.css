@@ -119,3 +119,7 @@ p a:link, a:visited, a:active{
 	padding:4px;
 	text-decoration:none;
 }
+
+
+#materia {margin-right :5px; float:left; width:45%; padding:5px;} 
+#tipo_usuario {float:left; width:45%; padding:5px;}
