@@ -15,16 +15,11 @@
              <input class="controls" type="text" name="nombre" id="nombre" placeholder="Ingrese su Nombre">
              <input class="controls" type="text" name="apellido" id="apellido" placeholder="Ingrese su Apellido">
              <input class="controls" type="email" name="correo" id="correo" placeholder="Ingrese su Correo">
-             <input class="controls" type="password" name="contrasena" id="contrasena" placeholder="Ingrese su Contraseña">
+             
              <input class="controls" type="text" name="cedula" id="cedula" placeholder="Ingrese su CI">
              <input class="controls" type="int" name="telefono" id="telefono" placeholder="Ingrese su Telefono">
              
-                <p>Tipo de Usuario</p>
-             <select name="tipo_usuario" id="tipo_usuario">
-                <option value="Administrador">Administrador</option>
-                <option value="Alumno" selected>Alumno</option>
-                <option value="Profesor">Profesor</option>
-              </select>
+               
         
                 
                 <input class="botons" type="submit" value="Registrar">
@@ -41,7 +36,7 @@
     const token = localStorage.getItem('token');
 
     async function obtenerValores(){
-        //obtener usuario seleccionado
+        //obtener usuario seleccionado + el id
         const respuesta = await fetch('/api/users/usuario/'+id, {
                 method: 'GET',
                 headers: {

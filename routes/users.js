@@ -19,7 +19,7 @@ router.post('/register',
             const id = uuidv4();
             
             //llamada bd para incertar usuario
-            const response = await pool.query('INSERT INTO usuario VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [ nombre, apellido, cedula, email, contrasenaEncriptada, tipo_usuario, telefono, id ]);
+            const response = await pool.query('INSERT INTO usuario VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [ nombre, apellido, cedula, email, contrasenaEncriptada, tipo_usuario, id ,telefono  ]);
 
             switch (tipo_usuario) {
                 case 'Administrador':

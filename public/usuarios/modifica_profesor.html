@@ -15,13 +15,11 @@
              <input class="controls" type="text" name="nombre" id="nombre" placeholder="Ingrese su Nombre">
              <input class="controls" type="text" name="apellido" id="apellido" placeholder="Ingrese su Apellido">
              <input class="controls" type="email" name="correo" id="correo" placeholder="Ingrese su Correo">
-             <input class="controls" type="password" name="contrasena" id="contrasena" placeholder="Ingrese su Contraseña">
              <input class="controls" type="text" name="cedula" id="cedula" placeholder="Ingrese su CI">
              <input class="controls" type="int" name="telefono" id="telefono" placeholder="Ingrese su Telefono">
              <input class="controls" type="int" name="valor_hora" id="valor_hora" placeholder="Ingrese Valor Hs. de la Materia">
              <input class="controls" type="text" name="experiencia" id="experiencia" placeholder="Ingrese su Experiencia ">
-             
-            
+                         
              <div id="materia">
                <p>Materia</p>
              <select name="materia" id="materia">
@@ -31,17 +29,7 @@
               </select>
 
             </div>
-             
-           <div id="tipo_usuario">
-                <p>Usuario</p>
-                 <select name="tipo_usuario" id="tipo_usuario">
-                    <option value="Administrador">Administrador</option>
-                    <option value="Alumno" selected>Alumno</option>
-                    <option value="Profesor">Profesor</option>
-                 </select>
-            </div>
-        
-                
+                          
                 <input class="botons" type="submit" value="Registrar">
                 <p><a href="/usuarios">Regresar . . .</a></p>
          </form>
@@ -50,6 +38,37 @@
 </body>
 
 <script>
+
+//Obtener Id de la URL
+const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    const token = localStorage.getItem('token');
+
+    async function obtenerValores(){
+        //obtener usuario seleccionado + el id
+        const respuesta = await fetch('/api/users/usuario/'+id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+        const datos = await respuesta.json();
+        
+        //llenar los valores del formulario
+        document.getElementById('nombre').value = datos.usuario.nombre;
+        document.getElementById('apellido').value = datos.usuario.apellido;
+        document.getElementById('correo').value = datos.usuario.email;
+        document.getElementById('cedula').value = datos.usuario.cedula;
+        document.getElementById('telefono').value = datos.usuario.telefono;
+        document.getElementById('valor_hora').value = datos.usuario.valor_hora;
+        document.getElementById('materia').value = datos.usuario.materia;
+        document.getElementById('experiencia').value = datos.usuario.experiencia;
+    }
+
+    obtenerValores();
+
     document.querySelector('form').addEventListener('submit', registro);
 
 async function registro(e) {
@@ -58,9 +77,7 @@ async function registro(e) {
     const nombre = document.getElementById('nombre').value;
     const apellido = document.getElementById('apellido').value;
     const email =  document.getElementById('correo').value;
-    const contrasena = document.getElementById('contrasena').value;
     const cedula = document.getElementById('cedula').value;
-    const tipo_usuario = document.getElementById('tipo_usuario').value;
     const telefono = document.getElementById('telefono').value;
     const valor_hora = document.getElementById('valor_hora').value;
     const materia = document.getElementById('materia').value;
@@ -71,9 +88,7 @@ async function registro(e) {
         nombre: nombre,
         apellido: apellido,
         email: email,
-        contrasena: contrasena,
         cedula: cedula,
-        tipo_usuario: tipo_usuario,
         telefono: telefono,
         valor_hora: valor_hora,
         materia: materia,
@@ -81,22 +96,18 @@ async function registro(e) {
     };
 
     //Hacer llamada al backend
-    const respuesta = await fetch('/api/users/register', {
-        method: 'POST',
+    const respuesta = await fetch('/api/users/profesor/'+id, {
+        method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': token
         },
         body: JSON.stringify(body)
     })
 
     //Obtener datos de la llamada
      const datos = await respuesta.json();
-
-    //Guardar token
-     localStorage.setItem('token', datos.token);
-
-    //redireccionar
-    window.location.href = '/';
+   
 }
 
 </script>
