@@ -19,6 +19,7 @@ router.post('/register',
             const id = uuidv4();
             
             //llamada bd para incertar usuario
+            //y ademas realiza entrada a la tabla del tipo de usuario que sea
             const response = await pool.query('INSERT INTO usuario VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [ nombre, apellido, cedula, email, contrasenaEncriptada, tipo_usuario, id ,telefono  ]);
 
             switch (tipo_usuario) {
@@ -50,6 +51,8 @@ router.get('/usuarios', auth,
         }
 })
 
+//obtiene la info de un solo usuario dependiendo del tipo de usuario
+//paso id de la (url) del usuario que quiero obtener 
 router.get('/usuario/:id', auth,
     async (req, res) => {
         try {
@@ -70,6 +73,8 @@ router.get('/usuario/:id', auth,
         }
 })
 
+//ruta para actualizar la tabla administrador, le paso todos los valores del formulario
+//query actualiza la tabla administrador 
 router.put('/administrador/:id', auth, async (req, res) => {
     try {
         const { nombre, apellido, email, cedula, telefono } = req.body;
@@ -81,6 +86,8 @@ router.put('/administrador/:id', auth, async (req, res) => {
 
 })
 
+//ruta para actualizar la tabla alumno, le paso todos los valores del formulario
+//query actualiza la tabla alumno 
 router.put('/alumno/:id', auth, async (req, res) => {
     try {
         const { nombre, apellido, email, cedula, telefono, saldo_horas } = req.body;
@@ -93,6 +100,8 @@ router.put('/alumno/:id', auth, async (req, res) => {
 
 })
 
+//ruta para actualizar la tabla profesor, le paso todos los valores del formulario
+//query actualiza la tabla profesor
 router.put('/profesor/:id', auth, async (req, res) => {
     try {
         const { nombre, apellido, email, cedula, telefono, valor_hora, materia, experiencia } = req.body;
