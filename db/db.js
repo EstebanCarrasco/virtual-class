@@ -8,8 +8,8 @@ const pool = new Pool({
   connectionString:
     process.env.NODE_ENV === "production" ? prodConfig : devConfig,
     ssl: {
-        rejectUnauthorized: false
-    }
+      rejectUnauthorized: false
+  }
 });
 
 pool.query('SELECT NOW()').then(res => {

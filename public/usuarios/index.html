@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    Esta pagina solo pueden acceder admins
+
+    <section id="lista-usuarios">
+        <h1>Listado Usuarios</h1>
+        <table id="tabla-usuarios">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Tipo de Usuario</th>
+                <th>Acciones</th>
+            </tr>
+            <tr>
+                
+            </tr>
+           
+        </table>
+    </section>
+    <p><a href="/index.html">Regresar . . .</a></p>
+</body>
+
+<script>
+      async function verificarToken() {
+        const token = localStorage.getItem('token');
+        if(token) { 
+            const respuesta = await fetch('/api/users/verifyToken', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            const datos = await respuesta.json();
+
+            if(datos.auth && datos.tipo_usuario === 'Administrador') {
+                obtenerUsuarios();
+            } else {
+                window.location.href = "/"
+            }
+        } else {
+            window.location.href = "/"
+        }
+    }
+
+    verificarToken();
+
+    async function obtenerUsuarios() {
+        const token = localStorage.getItem('token');
+        //Obtener usuarios
+        const respuesta = await fetch('/api/users/usuarios', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+        const datos = await respuesta.json();
+        console.log(datos)
+
+        //Crear un elemento en la lista para cada usuario
+        datos.usuarios.forEach(usuario => {
+            //Crear una nueva linea en la tabla
+            const lineaTabla = document.createElement('tr');
+            
+            //Agregar la columna de nombre
+            const columnaNombre = document.createElement('td');
+            columnaNombre.textContent = usuario.nombre;
+            lineaTabla.appendChild(columnaNombre);
+
+            //Agregar la columna de apellido
+            const columnaApellido = document.createElement('td');
+            columnaApellido.textContent = usuario.apellido;
+            lineaTabla.appendChild(columnaApellido);
+
+            //Agregar la columna de mail
+            const columnaEmail = document.createElement('td');
+            columnaEmail.textContent = usuario.email;
+            lineaTabla.appendChild(columnaEmail);
+
+            //Agregar la columna de tipo
+            const columnaTipo = document.createElement('td');
+            columnaTipo.textContent = usuario.tipo_usuario;
+            lineaTabla.appendChild(columnaTipo);
+
+            
+            
+            //Crear el boton de editar
+            const botonEditar = document.createElement('button');
+            botonEditar.textContent = 'Editar';
+            
+
+             
+            //Agregar funcionalidad al boton editar
+            //paso id (url) para saber que usuario modificar
+            botonEditar.onclick = function(e) 
+            {
+                //manejar logica del click del boton
+                if(usuario.tipo_usuario === "Administrador") 
+                {
+                    window.location.href = "/usuarios/modifica_administrador.html?id="+usuario.id
+                } else if (usuario.tipo_usuario === "Alumno") 
+                {
+                    window.location.href = "/usuarios/modifica_alumno.html?id="+usuario.id
+                }
+                 else if (usuario.tipo_usuario === "Profesor") 
+                {
+                window.location.href = "/usuarios/modifica_profesor.html?id="+usuario.id
+                }
+            }
+           //Crear el boton de eliminar
+             const botonEliminar = document.createElement('button');
+             botonEliminar.textContent = 'Eliminar';
+            
+             
+            //Agregar la columna de acciones
+            const columnaAcciones = document.createElement('td');
+            //Agregar el boton a la columna de acciones
+            columnaAcciones.appendChild(botonEditar);
+            columnaAcciones.appendChild(botonEliminar);
+            lineaTabla.appendChild(columnaAcciones);
+
+            //Agregar la nueva linea a la tabla
+            document.getElementById('tabla-usuarios').appendChild(lineaTabla);
+        })
+    }
+</script>
+
+</html>
