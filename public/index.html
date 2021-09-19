@@ -32,6 +32,13 @@
             const datos = await respuesta.json();
 
             if(datos.auth) {
+                if(datos.tipo_usuario === 'Administrador') {
+                    const listaUsuariosElement = document.createElement('a');
+                    listaUsuariosElement.setAttribute('href', '/usuarios');
+                    listaUsuariosElement.textContent = 'Usuarios';
+                    listaUsuariosElement.classList.add('nav-enlace');
+                    document.querySelector('nav').prepend(listaUsuariosElement);
+                }
                 //crea elemento de logout
                 const logoutElement = document.createElement('a');
                 //setearle el href
