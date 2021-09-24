@@ -125,3 +125,8 @@ p a:link, a:visited, a:active{
 
 
 #materia {margin-right :5px; float:left; width:70%; padding:5px;} 
+
+p {
+  color: gray;
+  
+}

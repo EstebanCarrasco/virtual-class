@@ -146,6 +146,17 @@ router.post('/login',
 
 });
 
+router.get('/users/alumno', auth,
+    async (req, res) => {
+        try {            
+            const response = await pool.query('SELECT * FROM usuario INNER JOIN Alumno ON Usuario.Id = Alumno.Id');
+            res.send({usuarios: response.rows});
+        } catch (error) {
+            res.send(error);
+        }
+})
+
+
 router.delete('/', auth, async (req, res) => {
     try {
         const response = await pool.query('DELETE FROM users WHERE id = $1', [req.user.id]);

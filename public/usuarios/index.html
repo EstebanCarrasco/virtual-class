@@ -57,6 +57,7 @@
 
     async function obtenerUsuarios() {
         const token = localStorage.getItem('token');
+        
         //Obtener usuarios
         const respuesta = await fetch('/api/users/usuarios', {
                 method: 'GET',
