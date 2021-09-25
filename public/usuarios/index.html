@@ -124,15 +124,21 @@
              const botonEliminar = document.createElement('button');
              botonEliminar.textContent = 'Eliminar';
              botonEliminar.onclick = async function(e) {
+
+                var result = confirm("Esta seguro de ELIMINAR el Usuario ?");
+                if (result) {
+                 //logica Delete
+                
                 const respuestaEliminar = await fetch('/api/users/'+usuario.id, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': token
                     }
+                
                 })
                 location.reload();
-             }
+             }}
             
              
             //Agregar la columna de acciones
