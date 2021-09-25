@@ -146,9 +146,22 @@ router.post('/login',
 
 });
 
-router.delete('/', auth, async (req, res) => {
+router.get('/alumno', auth,
+    async (req, res) => {
+        try {            
+            const response = await pool.query('SELECT * FROM usuario INNER JOIN Alumno ON Usuario.Id = Alumno.Id');
+            res.send({usuarios: response.rows});
+        } catch (error) {
+            res.send(error);
+        }
+})
+
+
+router.delete('/:id', auth, async (req, res) => {
     try {
-        const response = await pool.query('DELETE FROM users WHERE id = $1', [req.user.id]);
+        console.log(req.params.id)
+        const response = await pool.query('DELETE FROM usuario WHERE id = $1', [req.params.id]);
+        console.log(response)
         res.send({'result': 'User deleted'});
     } catch (error) {
         res.status(400).send(error)

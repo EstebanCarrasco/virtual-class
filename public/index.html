@@ -30,7 +30,7 @@
             })
 
             const datos = await respuesta.json();
-
+                //boton lleva a lista usarios solo si es admin
             if(datos.auth) {
                 if(datos.tipo_usuario === 'Administrador') {
                     const listaUsuariosElement = document.createElement('a');
@@ -38,7 +38,17 @@
                     listaUsuariosElement.textContent = 'Usuarios';
                     listaUsuariosElement.classList.add('nav-enlace');
                     document.querySelector('nav').prepend(listaUsuariosElement);
+               
+                    //boton lleva a lista Alumnos solo si es admin
+                    const listaAlumnosElement = document.createElement('a');
+                    listaAlumnosElement.setAttribute('href', '/usuarios/lista_alumnos.html');
+                    listaAlumnosElement.textContent = 'Alumnos';
+                    listaAlumnosElement.classList.add('nav-enlace');
+                    document.querySelector('nav').prepend(listaAlumnosElement);
                 }
+
+
+
                 //crea elemento de logout
                 const logoutElement = document.createElement('a');
                 //setearle el href

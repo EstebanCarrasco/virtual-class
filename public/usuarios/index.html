@@ -57,6 +57,7 @@
 
     async function obtenerUsuarios() {
         const token = localStorage.getItem('token');
+        
         //Obtener usuarios
         const respuesta = await fetch('/api/users/usuarios', {
                 method: 'GET',
@@ -66,11 +67,11 @@
                 }
             })
 
-        const datos = await respuesta.json();
-        console.log(datos)
+        const datosUsuario = await respuesta.json();
+        console.log(datosUsuario)
 
         //Crear un elemento en la lista para cada usuario
-        datos.usuarios.forEach(usuario => {
+        datosUsuario.usuarios.forEach(usuario => {
             //Crear una nueva linea en la tabla
             const lineaTabla = document.createElement('tr');
             
@@ -94,7 +95,7 @@
             columnaTipo.textContent = usuario.tipo_usuario;
             lineaTabla.appendChild(columnaTipo);
 
-            
+
             
             //Crear el boton de editar
             const botonEditar = document.createElement('button');
@@ -122,6 +123,18 @@
            //Crear el boton de eliminar
              const botonEliminar = document.createElement('button');
              botonEliminar.textContent = 'Eliminar';
+             botonEliminar.onclick = async function(e) {
+                if(!confirm('Deseas eliminar este usuario?')) return;
+                const respuestaEliminar = await fetch('/api/users/'+usuario.id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    }
+                
+                })
+                location.reload();
+             }
             
              
             //Agregar la columna de acciones
