@@ -124,6 +124,7 @@
              const botonEliminar = document.createElement('button');
              botonEliminar.textContent = 'Eliminar';
              botonEliminar.onclick = async function(e) {
+                if(!confirm('Deseas eliminar este usuario?')) return;
                 const respuestaEliminar = await fetch('/api/users/'+usuario.id, {
                     method: 'DELETE',
                     headers: {
