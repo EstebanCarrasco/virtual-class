@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    Esta pagina solo pueden acceder admins
+    
 
     <section id="lista-usuarios">
-        <h1>Listado Usuarios</h1>
+        <br>
+        <h1 >Listado Usuarios</h1>
+        <br>
         <table id="tabla-usuarios">
             <tr>
                 <th>Nombre</th>
@@ -26,7 +28,9 @@
            
         </table>
     </section>
-    <p><a href="/index.html">Regresar . . .</a></p>
+    <br>
+    <br>
+    <p><a href="/index.html"> Regresar </a></p>
 </body>
 
 <script>
@@ -94,14 +98,12 @@
             const columnaTipo = document.createElement('td');
             columnaTipo.textContent = usuario.tipo_usuario;
             lineaTabla.appendChild(columnaTipo);
-
-
-            
+         
             //Crear el boton de editar
             const botonEditar = document.createElement('button');
             botonEditar.textContent = 'Editar';
-            
-
+            botonEditar.classList.add("boton-editar");
+                   
              
             //Agregar funcionalidad al boton editar
             //paso id (url) para saber que usuario modificar
@@ -123,6 +125,9 @@
            //Crear el boton de eliminar
              const botonEliminar = document.createElement('button');
              botonEliminar.textContent = 'Eliminar';
+             botonEliminar.classList.add("boton-eliminar");
+            
+
              botonEliminar.onclick = async function(e) {
                 if(!confirm('Deseas eliminar este usuario?')) return;
                 const respuestaEliminar = await fetch('/api/users/'+usuario.id, {
@@ -143,7 +148,7 @@
             columnaAcciones.appendChild(botonEditar);
             columnaAcciones.appendChild(botonEliminar);
             lineaTabla.appendChild(columnaAcciones);
-
+              
             //Agregar la nueva linea a la tabla
             document.getElementById('tabla-usuarios').appendChild(lineaTabla);
         })
