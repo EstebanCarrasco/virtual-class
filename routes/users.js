@@ -157,6 +157,7 @@ router.get('/alumno', auth,
 })
 
 
+
 router.delete('/:id', auth, async (req, res) => {
     try {
         console.log(req.params.id)

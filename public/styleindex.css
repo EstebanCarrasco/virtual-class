@@ -10,8 +10,9 @@
   
 
 .nav-enlace{
-    display: inline-block;
-    background:salmon;
+    /*display: inline-block;
+    background:salmon;*/
+    font-size: 20px;
     color:#fff;
     padding: 10px 30px;
     text-decoration: none;
@@ -20,7 +21,7 @@
   }
 
   .nav-enlace:hover{
-      background: rosybrown;
+      background: rgb(124, 122, 122);
   }
 
   nav{
