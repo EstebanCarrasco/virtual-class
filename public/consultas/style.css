@@ -160,15 +160,16 @@
   background-color: #f12b24;
 }
 
+/* boton regresar */
 p a:link, a:visited, a:active{
-  border: 2px solid #2e518b; /*anchura, estilo y color borde*/
-padding: 10px; /*espacio alrededor texto*/
+  border: 1px solid #2e518b; /*anchura, estilo y color borde*/
+padding: 8px; /*espacio alrededor texto*/
 background-color: #3d7ba8; /*color botón*/
-color: #ffffff; /*color texto*/
+color: #ffffff;; /*color texto*/
 text-decoration: none; /*decoración texto*/
 font-family: 'Helvetica', sans-serif; /*tipografía texto*/
-border-radius: 6px; /*bordes redondos*/
-margin: 5px 5px 5px 5px;
+border-radius: 4px; /*bordes redondos*/
+margin-left: 30px;
 }
 
 
