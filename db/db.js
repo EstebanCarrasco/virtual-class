@@ -9,7 +9,7 @@ const pool = new Pool({
     process.env.NODE_ENV === "production" ? prodConfig : devConfig,
 
 ssl:{
-  rejectUnauthorized: false
+    rejectUnauthorized: false
 }
    
 });

@@ -1,0 +1,80 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+  }
+
+  body {
+    background-image: url('12540-tecnologia.jpg');
+  }
+  
+ 
+  #lista-usuarios h1{
+    font-size: 30px;
+    text-align: center;
+    color: #184a8d;
+    font-weight: normal;
+    font-family: Arial;
+    text-transform: uppercase;
+}
+
+
+  table{
+      border-collapse: collapse;
+      font-size: 12pt;
+      font-family: 'arial';
+      width: 100%;
+      background: #d6eaf8 ;
+  }
+
+  table th{
+      text-align: left;
+      padding: 10px;
+      background: #3d7ba8;
+      color:#FFF;
+  
+  }
+
+  table tr:nth-child(odd){
+      background: 10px;
+  }
+  table td{
+      padding: 10px;
+  }
+
+ 
+
+/* boton regresar */
+p a:link, a:visited, a:active{
+  border: 1px solid #2e518b; /*anchura, estilo y color borde*/
+padding: 8px; /*espacio alrededor texto*/
+background-color: #3d7ba8; /*color botón*/
+color: #ffffff;; /*color texto*/
+text-decoration: none; /*decoración texto*/
+font-family: 'Helvetica', sans-serif; /*tipografía texto*/
+border-radius: 4px; /*bordes redondos*/
+margin-left: 30px;
+}
+
+
+
+
+
+.boton-consultar{
+  background: rgb(25, 187, 98);
+  text-decoration: none;
+  padding: 3px;
+  font-weight: 400;
+  font-size: 17px;
+  border-radius: 6px;
+  border: 2px solid rgb(25, 187, 98);
+  margin: 5px 5px 5px 5px;
+  
+
+   
+}
+.boton-consultar:hover{
+  color: #131414;
+  background-color: #3fe637;
+}

@@ -73,6 +73,16 @@ router.get('/usuario/:id', auth,
         }
 })
 
+
+router.get('/profesores', auth, async (req, res) => {
+    try {
+        const profesores = await pool.query('SELECT * FROM profesor INNER JOIN usuario ON profesor.Id = usuario.Id');
+        res.send(profesores.rows)
+    } catch (error) {
+        res.send(error);
+    }
+})
+
 //ruta para actualizar la tabla administrador, le paso todos los valores del formulario
 //query actualiza la tabla administrador 
 router.put('/administrador/:id', auth, async (req, res) => {
@@ -155,6 +165,7 @@ router.get('/alumno', auth,
             res.send(error);
         }
 })
+
 
 
 router.delete('/:id', auth, async (req, res) => {

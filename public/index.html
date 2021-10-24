@@ -47,6 +47,14 @@
                     document.querySelector('nav').prepend(listaAlumnosElement);
                 }
 
+                if(datos.tipo_usuario === 'Alumno') {
+                    const listaProfesores = document.createElement('a');
+                    listaProfesores.setAttribute('href', '/consultas/selecciona_profesor.html');
+                    listaProfesores.textContent = 'Lista Profesores';
+                    listaProfesores.classList.add('nav-enlace');
+                    document.querySelector('nav').prepend(listaProfesores);
+                }
+
 
 
                 //crea elemento de logout
