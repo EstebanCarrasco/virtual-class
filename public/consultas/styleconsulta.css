@@ -38,8 +38,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedbe9', end
       margin-left: 60px;
       min-width: 1700px;
       max-width: 1700px;
-      min-height:500px;
-      max-height:500px;
+      min-height:300px;
+      max-height:300px;
       border: 0px;
       background-color: rgba(238, 238, 238, 0.61);
     
@@ -68,10 +68,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedbe9', end
         color: #3a3ca8;
         margin-left: 60px;
         font-size:17px;
-      
-
-        
-                
+                      
     }
 
-    
+    label {
+        
+      margin-left : 60px;
+    }
+
+    .Consulta{
+      margin : 60px;
+    }

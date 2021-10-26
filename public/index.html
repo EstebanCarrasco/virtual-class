@@ -53,7 +53,23 @@
                     listaProfesores.textContent = 'Lista Profesores';
                     listaProfesores.classList.add('nav-enlace');
                     document.querySelector('nav').prepend(listaProfesores);
-                }
+
+                    const VerRespuesta = document.createElement('a');
+                    VerRespuesta.setAttribute('href', '/consultas/ver_respuestas.html');
+                    VerRespuesta.textContent = 'Ver Respuestas';
+                    VerRespuesta.classList.add('nav-enlace');
+                    document.querySelector('nav').prepend(VerRespuesta);
+
+                    }
+
+                    if(datos.tipo_usuario === 'Profesor') {
+                    const VerConsulta = document.createElement('a');
+                    VerConsulta.setAttribute('href', '/consultas/ver_consultas.html');
+                    VerConsulta.textContent = 'Ver Consultas';
+                    VerConsulta.classList.add('nav-enlace');
+                    document.querySelector('nav').prepend(VerConsulta);
+
+                    }
 
 
 
