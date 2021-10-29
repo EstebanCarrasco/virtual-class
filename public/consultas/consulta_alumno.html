@@ -62,7 +62,10 @@
         const body = {
             profesor: id,
             planteo
-        }
+
+            }
+            console.log(body)
+            alert('Consulta enviada')
 
         const respuesta = await fetch('/api/users/consulta', {
                 method: 'POST',
@@ -73,8 +76,8 @@
                 body: JSON.stringify(body)
             })
 
-        console.log(body)
-        alert('Consulta enviada')
+       // console.log(body)
+       // alert('Consulta enviada')
     }
 </script>
 </html>
