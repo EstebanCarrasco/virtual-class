@@ -18,7 +18,8 @@
             <tr>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Email</th>
+                <th>Planteo</th>
+                <th>Respondido</th>
                 <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
@@ -47,7 +48,7 @@
 
             const datos = await respuesta.json();
 
-            if(datos.auth && datos.tipo_usuario === 'Administrador') {
+            if(datos.auth && datos.tipo_usuario === 'Profesor') {
                 obtenerUsuarios();
             } else {
                 window.location.href = "/"
@@ -63,7 +64,7 @@
         const token = localStorage.getItem('token');
         
         //Obtener usuarios
-        const respuesta = await fetch('/api/users/usuarios', {
+        const respuesta = await fetch('/api/users/consulta', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +76,7 @@
         console.log(datosUsuario)
 
         //Crear un elemento en la lista para cada usuario
-        datosUsuario.usuarios.forEach(usuario => {
+        datosUsuario.forEach(usuario => {
             //Crear una nueva linea en la tabla
             const lineaTabla = document.createElement('tr');
             
@@ -90,15 +91,19 @@
             lineaTabla.appendChild(columnaApellido);
 
             //Agregar la columna de mail
-            const columnaEmail = document.createElement('td');
-            columnaEmail.textContent = usuario.email;
-            lineaTabla.appendChild(columnaEmail);
+            const columnaPlanteo = document.createElement('td');
+            columnaPlanteo.textContent = usuario.planteo;
+            lineaTabla.appendChild(columnaPlanteo);
 
-            //Agregar la columna de fecha
-            const columnaTipo = document.createElement('td');
-            columnaTipo.textContent = usuario.fecha;
-            lineaTabla.appendChild(columnaTipo);
+            const columnaRespondido = document.createElement('td');
+            columnaRespondido.textContent = usuario.respondido ? 'Si' : 'No';
+            lineaTabla.appendChild(columnaRespondido);
+            
+            const columnaFecha = document.createElement('td');
+            columnaFecha.textContent = new Date(usuario.fecha).toDateString();
+            lineaTabla.appendChild(columnaFecha);
          
+
             //Crear el boton de responder
             const botonResponder = document.createElement('button');
             botonResponder.textContent = 'Responder';
@@ -107,29 +112,16 @@
              
             //Agregar funcionalidad al boton responder
             //paso id (url) para saber que usuario modificar
-            botonEditar.onclick = function(e) 
+            botonResponder.onclick = function(e) 
             {
-                //manejar logica del click del boton
-                if(usuario.tipo_usuario === "Administrador") 
-                {
-                    window.location.href = "/usuarios/modifica_administrador.html?id="+usuario.id
-                } else if (usuario.tipo_usuario === "Alumno") 
-                {
-                    window.location.href = "/usuarios/modifica_alumno.html?id="+usuario.id
-                }
-                 else if (usuario.tipo_usuario === "Profesor") 
-                {
-                window.location.href = "/usuarios/modifica_profesor.html?id="+usuario.id
-                }
+                window.location.href = `/consultas/respuesta_profesor.html?id=${usuario.consultaid}&consulta=${usuario.planteo}`
             }
-           
-                
               
              
             //Agregar la columna de acciones
             const columnaAcciones = document.createElement('td');
             //Agregar el boton a la columna de acciones
-            columnaAcciones.appendChild(botonRespponder);
+            columnaAcciones.appendChild(botonResponder);
             columnaAcciones.appendChild(botonResponder);
             lineaTabla.appendChild(columnaAcciones);
               

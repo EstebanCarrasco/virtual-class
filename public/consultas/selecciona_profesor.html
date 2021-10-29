@@ -114,6 +114,10 @@
             //Crear el boton de consultar
             const botonConsultar = document.createElement('button');
             botonConsultar.textContent = 'Consultar';
+            botonConsultar.addEventListener('click', function() {
+                window.location.href = `/consultas/consulta_alumno.html?id=${usuario.id}`;
+            })
+            botonConsultar.setAttribute('href', `/consultas/selecciona_profesor.html`);
             botonConsultar.classList.add("boton-consultar");
                    
              

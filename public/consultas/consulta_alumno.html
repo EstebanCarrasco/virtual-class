@@ -15,12 +15,12 @@
 
 
 <form>
-    <textarea class=estilotextarea cols="30" rows="8">Realiza Consulta . . .</textarea> 
+    <textarea class=estilotextarea id="planteo" cols="30" rows="8" placeholder="Realiza Consulta . . ."></textarea> 
 
 </form>
 
 <br>
-<input class="botons" type="submit" value="Enviar">
+<input class="botons" type="submit" value="Enviar" onclick="enviarConsulta()">
 <input class="botons" type="submit" value="Adjuntar Archivo">
 <input class="botons" type="submit" value="Comprar Horas">
 <br>
@@ -32,4 +32,49 @@
    <p><a href="/index.html">Regresar</a></p>
 
 </body>
+
+<script>
+    async function obtenerDatos() {
+        const token = localStorage.getItem('token');
+        if(token) { 
+            const respuesta = await fetch('/api/users/verifyToken', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            const datos = await respuesta.json();
+            console.log(datos)
+        }
+    }
+
+    obtenerDatos();
+
+    async function enviarConsulta(e) {
+         //Obtener Id de la URL
+        const token = localStorage.getItem('token');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const planteo = document.getElementById("planteo").value;
+        const body = {
+            profesor: id,
+            planteo
+        }
+
+        const respuesta = await fetch('/api/users/consulta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify(body)
+            })
+
+        console.log(body)
+        alert('Consulta enviada')
+    }
+</script>
 </html>

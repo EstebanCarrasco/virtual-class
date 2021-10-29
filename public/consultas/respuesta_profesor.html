@@ -18,12 +18,12 @@
 <br>
 
 <form>
-    <textarea class=estilotextarea cols="30" rows="8">Responder Consulta . . .</textarea> 
+    <textarea class=estilotextarea cols="30" rows="8" id='respuesta' placeholder="Responder Consulta . . ."></textarea> 
 
 </form>
 
 <br>
-<input class="botons" type="submit" value="Enviar">
+<input class="botons" type="submit" value="Enviar" onclick="enviarRespuesta()">
 <input class="botons" type="submit" value="Adjuntar Archivo">
 
 <br>
@@ -34,4 +34,74 @@
    <p><a href="/index.html">Regresar</a></p>
 
 </body>
+
+<script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const consulta = urlParams.get('consulta');
+        const token = localStorage.getItem('token');
+
+        document.querySelector('.Consulta').textContent = consulta;
+
+    async function obtenerConsulta() {
+        const res = await fetch('/api/users/consulta/'+id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+        })
+        
+        const datosConsulta = await res.json()
+        const respuesta = document.getElementById('respuesta').value = datosConsulta[0].respuesta;
+        document.querySelector('.Consulta').textContent = datosConsulta[0].planteo;
+
+        
+    }
+
+    obtenerConsulta();
+
+    async function verificarPermisos() {
+        const respuesta = await fetch('/api/users/verifyToken', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            const datos = await respuesta.json();
+            if(datos.tipo_usuario !== "Profesor") {
+                alert("No tienes permisos para modificar la respuesta");
+                return false;
+            }
+
+            return true
+    }
+
+    async function enviarRespuesta(e) {
+        if(!await verificarPermisos()) return;
+
+        const respuesta = document.getElementById('respuesta').value;
+        const body = {
+            respuesta,
+            id
+        }
+        alert("Respuesta enviada")
+        
+        const res = await fetch('/api/users/consulta', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify(body)
+            })
+
+        
+    }
+
+
+
+</script>
 </html>
