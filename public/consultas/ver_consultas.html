@@ -18,8 +18,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Planteo</th>
-                <th>Respondido</th>
+                <th>Email</th>
                 <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
@@ -48,7 +47,7 @@
 
             const datos = await respuesta.json();
 
-            if(datos.auth && datos.tipo_usuario === 'Profesor') {
+            if(datos.auth && datos.tipo_usuario === 'Administrador') {
                 obtenerUsuarios();
             } else {
                 window.location.href = "/"
@@ -64,7 +63,7 @@
         const token = localStorage.getItem('token');
         
         //Obtener usuarios
-        const respuesta = await fetch('/api/users/consulta', {
+        const respuesta = await fetch('/api/users/usuarios', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +75,7 @@
         console.log(datosUsuario)
 
         //Crear un elemento en la lista para cada usuario
-        datosUsuario.forEach(usuario => {
+        datosUsuario.usuarios.forEach(usuario => {
             //Crear una nueva linea en la tabla
             const lineaTabla = document.createElement('tr');
             
@@ -91,19 +90,15 @@
             lineaTabla.appendChild(columnaApellido);
 
             //Agregar la columna de mail
-            const columnaPlanteo = document.createElement('td');
-            columnaPlanteo.textContent = usuario.planteo;
-            lineaTabla.appendChild(columnaPlanteo);
+            const columnaEmail = document.createElement('td');
+            columnaEmail.textContent = usuario.email;
+            lineaTabla.appendChild(columnaEmail);
 
-            const columnaRespondido = document.createElement('td');
-            columnaRespondido.textContent = usuario.respondido ? 'Si' : 'No';
-            lineaTabla.appendChild(columnaRespondido);
-            
-            const columnaFecha = document.createElement('td');
-            columnaFecha.textContent = new Date(usuario.fecha).toDateString();
-            lineaTabla.appendChild(columnaFecha);
+            //Agregar la columna de fecha
+            const columnaTipo = document.createElement('td');
+            columnaTipo.textContent = usuario.fecha;
+            lineaTabla.appendChild(columnaTipo);
          
-
             //Crear el boton de responder
             const botonResponder = document.createElement('button');
             botonResponder.textContent = 'Responder';
@@ -111,17 +106,30 @@
                    
              
             //Agregar funcionalidad al boton responder
-            //paso id (url) para saber que usuario modificar
-            botonResponder.onclick = function(e) 
+            //paso id (url) para saber que usuario responder
+            botonEditar.onclick = function(e) 
             {
-                window.location.href = `/consultas/respuesta_profesor.html?id=${usuario.consultaid}&consulta=${usuario.planteo}`
+                //manejar logica del click del boton
+                if(usuario.tipo_usuario === "Administrador") 
+                {
+                    window.location.href = "/usuarios/modifica_administrador.html?id="+usuario.id
+                } else if (usuario.tipo_usuario === "Alumno") 
+                {
+                    window.location.href = "/usuarios/modifica_alumno.html?id="+usuario.id
+                }
+                 else if (usuario.tipo_usuario === "Profesor") 
+                {
+                window.location.href = "/usuarios/modifica_profesor.html?id="+usuario.id
+                }
             }
+           
+                
               
              
             //Agregar la columna de acciones
             const columnaAcciones = document.createElement('td');
             //Agregar el boton a la columna de acciones
-            columnaAcciones.appendChild(botonResponder);
+            columnaAcciones.appendChild(botonRespponder);
             columnaAcciones.appendChild(botonResponder);
             lineaTabla.appendChild(columnaAcciones);
               
