@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Listado de Profesores</title>
+    <title>Consultas</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body >
     
+
     <section id="lista-usuarios">
         <br>
-        <h1 >Listado Profesores</h1>
+        <h1 >Ver Consultas</h1>
         <br>
-        <table id="tabla-profesores">
+        <table id="tabla-usuarios">
             <tr>
-                <th>Nombre Profesor</th>
-                <th>Apellido Profesor</th>
-                <th>Email</th>
-                <th>Asignatura</th>
-                <th>Valor Hora</th>
-                <th>Experiencia</th>
+                <th>Nombre Alumno</th>
+                <th>Apellido Alumno </th>
+                <th>Planteo</th>
+                <th>Respondido</th>
+                <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
             <tr>
@@ -31,12 +31,11 @@
     </section>
     <br>
     <br>
-    <p><a href="/index.html">Regresar</a></p>
+    <p><a href="/index.html"> Regresar </a></p>
 </body>
 
 <script>
-
-    async function verificarToken() {
+      async function verificarToken() {
         const token = localStorage.getItem('token');
         if(token) { 
             const respuesta = await fetch('/api/users/verifyToken', {
@@ -49,7 +48,7 @@
 
             const datos = await respuesta.json();
 
-            if(datos.auth && datos.tipo_usuario === 'Alumno') {
+            if(datos.auth && datos.tipo_usuario === 'Profesor') {
                 obtenerUsuarios();
             } else {
                 window.location.href = "/"
@@ -65,7 +64,7 @@
         const token = localStorage.getItem('token');
         
         //Obtener usuarios
-        const respuesta = await fetch('/api/users/profesores', {
+        const respuesta = await fetch('/api/users/consulta', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,47 +91,44 @@
             lineaTabla.appendChild(columnaApellido);
 
             //Agregar la columna de mail
-            const columnaEmail = document.createElement('td');
-            columnaEmail.textContent = usuario.email;
-            lineaTabla.appendChild(columnaEmail);
+            const columnaPlanteo = document.createElement('td');
+            columnaPlanteo.textContent = usuario.planteo;
+            lineaTabla.appendChild(columnaPlanteo);
 
-            //Agregar la columna de asignatura
-            const columnaMateria = document.createElement('td');
-            columnaMateria.textContent = usuario.materia;
-            lineaTabla.appendChild(columnaMateria);
-
-            //Agregar la columna de valor hora
-            const columnaValorHora = document.createElement('td');
-            columnaValorHora.textContent = usuario.valor_hora;
-            lineaTabla.appendChild(columnaValorHora);
-
-            //Agregar la columna de experiencia
-            const columnaExperiencia = document.createElement('td');
-            columnaExperiencia.textContent = usuario.experiencia;
-            lineaTabla.appendChild(columnaExperiencia);
+            const columnaRespondido = document.createElement('td');
+            columnaRespondido.textContent = usuario.respondido ? 'Si' : 'No';
+            lineaTabla.appendChild(columnaRespondido);
+            
+            const columnaFecha = document.createElement('td');
+            columnaFecha.textContent = new Date(usuario.fecha).toDateString();
+            lineaTabla.appendChild(columnaFecha);
          
-            //Crear el boton de consultar
-            const botonConsultar = document.createElement('button');
-            botonConsultar.textContent = 'Consultar';
-            botonConsultar.addEventListener('click', function() {
-                window.location.href = `/consultas/consulta_alumno.html?id=${usuario.id}`;
-            })
-            botonConsultar.setAttribute('href', `/consultas/selecciona_profesor.html`);
-            botonConsultar.classList.add("boton-consultar");
+
+            //Crear el boton de responder
+            const botonResponder = document.createElement('button');
+            botonResponder.textContent = 'Responder';
+            botonResponder.classList.add("boton-responder");
                    
+             
+            //Agregar funcionalidad al boton responder
+            //paso id (url) para saber que usuario modificar
+            botonResponder.onclick = function(e) 
+            {
+                window.location.href = `/consultas/respuesta_profesor.html?id=${usuario.consultaid}&consulta=${usuario.planteo}`
+            }
+              
              
             //Agregar la columna de acciones
             const columnaAcciones = document.createElement('td');
             //Agregar el boton a la columna de acciones
-            columnaAcciones.appendChild(botonConsultar);
+            columnaAcciones.appendChild(botonResponder);
+            columnaAcciones.appendChild(botonResponder);
             lineaTabla.appendChild(columnaAcciones);
               
             //Agregar la nueva linea a la tabla
-            document.getElementById('tabla-profesores').appendChild(lineaTabla);
+            document.getElementById('tabla-usuarios').appendChild(lineaTabla);
         })
     }
-
-
 </script>
 
 </html>

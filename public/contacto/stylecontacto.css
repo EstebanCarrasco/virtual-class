@@ -1,0 +1,62 @@
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+   
+  body {
+    background-image: url('12595-tecnologia.jpg');
+  }
+
+  /* boton regresar */
+p1 a:link, a:visited, a:active{
+    border: 1px solid #2e518b; /*anchura, estilo y color borde*/
+  padding: 8px; /*espacio alrededor texto*/
+  background-color: #3d7ba8; /*color botón*/
+  color: #ffffff;; /*color texto*/
+  text-decoration: none; /*decoración texto*/
+  font-family: 'Helvetica', sans-serif; /*tipografía texto*/
+  border-radius: 4px; /*bordes redondos*/
+  margin-left: 30px;
+  }
+  
+  div img {
+    display: block;
+    margin : 0 auto;
+    height: 450px ;
+
+    }
+  h1 {
+       margin-left: 80px;
+       margin-top: 20px;
+       font-size: 200%;
+       color: #c71616;
+       text-align:center
+    }
+  h2, h3 { 
+          font-family: Georgia, Times, serif;
+          font-size: 130%;
+          color: #c71616;
+          margin-top: 0;
+          margin-left: 30px;
+          text-align:center
+        }
+  h3 { 
+      color: #c71616;
+      text-align:center
+    }
+  p {
+      line-height: 1.5em;
+      text-indent: 15px; 
+      margin: 35px;
+      color: #ffffff;
+      text-align:center;
+    
+      background: black;
+      
+        
+    }
+  
+   

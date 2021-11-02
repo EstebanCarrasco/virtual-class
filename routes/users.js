@@ -192,4 +192,57 @@ router.get('/verifyToken', auth, (req, res) => {
     }
 })
 
+
+router.post('/consulta', auth, async (req, res) => {
+    try {
+        const { profesor, planteo } = req.body;
+        const consultaId = uuidv4();
+        await pool.query('INSERT INTO consultas (id, alumno, profesor, planteo, respondido, fecha) VALUES($1, $2, $3, $4, $5, $6)', [consultaId, req.user.id, profesor, planteo, false, new Date()]);
+    } catch (error) {
+        console.log(error)
+        res.send(error);
+    }
+})
+
+router.get('/consulta', auth, async (req, res) => {
+    try {
+        const consultas = await pool.query('SELECT consultas.id AS consultaId, * FROM consultas INNER JOIN alumno ON alumno.id = consultas.alumno INNER JOIN usuario ON alumno.id = usuario.id WHERE profesor = $1', [req.user.id]);
+        res.send(consultas.rows);
+    } catch (error) {
+        console.log(error)
+        res.send(error);
+    }
+})
+
+router.get('/consulta-alumno', auth, async (req, res) => {
+    try {
+        const consultas = await pool.query('SELECT consultas.id AS consultaId, * FROM consultas INNER JOIN profesor ON profesor.id = consultas.profesor INNER JOIN usuario ON profesor.id = usuario.id WHERE alumno = $1', [req.user.id]);
+        res.send(consultas.rows);
+    } catch (error) {
+        console.log(error)
+        res.send(error);
+    }
+})
+
+
+router.get('/consulta/:id', auth, async (req, res) => {
+    try {
+        const consultas = await pool.query('SELECT planteo, respuesta FROM consultas WHERE id = $1', [req.params.id]);
+        res.send(consultas.rows);
+    } catch (error) {
+        console.log(error)
+        res.send(error);
+    }
+})
+
+
+router.put('/consulta', auth, async (req, res) => {
+    try {
+        const { respuesta, id } = req.body;
+        await pool.query('UPDATE consultas SET respuesta = $1, respondido = true WHERE consultas.id = $2', [respuesta, id])
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 module.exports = router;
