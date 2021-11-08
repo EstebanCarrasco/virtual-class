@@ -87,3 +87,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedbe9', end
     .Consulta{
       margin : 60px;
     }
+
+    input[type=button] {
+
+      padding:10px 20px; 
+      background:rgb(194, 203, 218); 
+      border:0 none;
+      cursor:pointer;
+      -webkit-border-radius: 5px;
+      border-radius: 5px; 
+      color: #3a3ca8;
+      margin-left: 60px;
+      font-size:17px;
+                    
+  }
