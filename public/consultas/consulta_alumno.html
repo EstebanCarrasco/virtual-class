@@ -22,8 +22,7 @@
 <br>
 <input class="botons" type="submit" value="Enviar" onclick="enviarConsulta()">
 
-<input class="botons" type="button" value="Comprar Horas" onclick="location='/pagos/comprar_horas.html'">
-
+<input class="botons" type="button" value="Comprar Horas" id='comprar-horas' >
 
 
 <br>
@@ -53,33 +52,54 @@
         }
     }
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    const botonComprar = document.getElementById('comprar-horas')
+    botonComprar.addEventListener('click', function(){
+        window.location.href = `/pagos/comprar_horas.html?id=${id}`;
+    }) 
+
     obtenerDatos();
 
     async function enviarConsulta(e) {
          //Obtener Id de la URL
         const token = localStorage.getItem('token');
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id');
-        const planteo = document.getElementById("planteo").value;
-        const body = {
-            profesor: id,
-            planteo
-
-            }
-            console.log(body)
-            alert('Consulta enviada')
-
-        const respuesta = await fetch('/api/users/consulta', {
-                method: 'POST',
+        let horasDisponibles;
+        const respuesta = await fetch('/api/users/current-usuario/', {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': token
-                },
-                body: JSON.stringify(body)
+                }
             })
 
-       
+            const datos = await respuesta.json();
+            console.log(datos)
+            horasDisponibles = datos.usuario.saldo_horas;
+        
+            console.log('hoiras', horasDisponibles)
+        if(horasDisponibles <= 0) {
+            alert('No tienes horas disponibles. Compra horas para realizar la consulta')
+        } else {
+            const planteo = document.getElementById("planteo").value;
+            const body = {
+                profesor: id,
+                planteo
+
+                }
+                console.log(body)
+                alert(`Consulta enviada. Te quedan ${horasDisponibles-1} horas disponibles`);
+
+            const respuesta = await fetch('/api/users/consulta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    },
+                    body: JSON.stringify(body)
+                })
+        }
     }
 </script>
 </html>

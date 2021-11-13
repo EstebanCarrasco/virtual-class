@@ -73,10 +73,39 @@ router.get('/usuario/:id', auth,
         }
 })
 
+router.get('/current-usuario/', auth,
+    async (req, res) => { 
+        try {
+            let respuesta = {};           
+            const usuario = await pool.query('SELECT * FROM usuario WHERE id = $1',[req.user.id]);
+            if(usuario.rows[0].tipo_usuario === 'Alumno') {
+                const alumno = await pool.query('SELECT * FROM alumno WHERE id = $1',[req.user.id]);
+                respuesta = {...usuario.rows[0], ...alumno.rows[0]};
+            } else if(usuario.rows[0].tipo_usuario === 'Profesor') {
+                const profesor = await pool.query('SELECT * FROM profesor WHERE id = $1',[req.user.id]);
+                respuesta = {...usuario.rows[0], ...profesor.rows[0]};
+            } else if(usuario.rows[0].tipo_usuario === 'Administrador') {
+                respuesta = {...usuario.rows[0]};
+            }
+            res.send({usuario: respuesta});
+        } catch (error) {
+            res.send(error);
+        }
+})
+
 
 router.get('/profesores', auth, async (req, res) => {
     try {
         const profesores = await pool.query('SELECT * FROM profesor INNER JOIN usuario ON profesor.Id = usuario.Id');
+        res.send(profesores.rows)
+    } catch (error) {
+        res.send(error);
+    }
+})
+
+router.get('/profesor/:id', auth, async (req, res) => {
+    try {
+        const profesores = await pool.query('SELECT * FROM profesor INNER JOIN usuario ON profesor.Id = usuario.Id WHERE profesor.Id = $1', [req.params.id]);
         res.send(profesores.rows)
     } catch (error) {
         res.send(error);
@@ -198,6 +227,8 @@ router.post('/consulta', auth, async (req, res) => {
         const { profesor, planteo } = req.body;
         const consultaId = uuidv4();
         await pool.query('INSERT INTO consultas (id, alumno, profesor, planteo, respondido, fecha) VALUES($1, $2, $3, $4, $5, $6)', [consultaId, req.user.id, profesor, planteo, false, new Date()]);
+        await pool.query('UPDATE alumno SET saldo_horas = saldo_horas - 1 WHERE id = $1', [req.user.id]);
+
     } catch (error) {
         console.log(error)
         res.send(error);
@@ -244,5 +275,40 @@ router.put('/consulta', auth, async (req, res) => {
         res.send(error)
     }
 })
+
+router.post('/horasDocente', auth, async (req, res) => {
+    try {
+        const id = uuidv4();
+        const { cantidad, monto, comprobante } = req.body;
+        await pool.query('INSERT INTO horasdocente (id, cantidad, monto, alumno, fecha, comprobante) VALUES($1,$2,$3,$4,$5,$6)', [id, cantidad, monto, req.user.id, new Date(), comprobante]);
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+router.get('/horasDocente', auth, async (req,res) => {
+    try {
+        const horasDocente = await pool.query('SELECT horasdocente.Id AS horasId, * FROM horasdocente INNER JOIN usuario ON horasdocente.alumno = usuario.id');
+        res.send(horasDocente.rows); 
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+router.post('/acreditarHoras', auth, async (req, res) => {
+    try {
+        const { alumno, cantidad, horasId} = req.body;
+        console.log(horasId)
+        await pool.query('UPDATE alumno SET saldo_horas = saldo_horas + $1 WHERE id = $2', [cantidad, alumno]);
+        await pool.query('DELETE FROM horasdocente WHERE id = $1', [horasId])
+        res.send('ok')
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
 
 module.exports = router;

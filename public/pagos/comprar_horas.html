@@ -18,22 +18,22 @@
                 
                 <form>
                     <p>Selecciona Cantidad de Horas </p>
-                    <select class="select-css">
-                        <option> 1 Hora Docente </option>
-                        <option> 2 Horas Docente </option>
-                        <option> 3 Horas Docente </option>
-                        <option> 4 Horas Docente</option>
-                        <option> 5 Horas Docente</option>
-                        <option> 6 Horas Docente</option>
-                        <option> 7 Horas Docente</option>
-                        <option> 8 Horas Docente</option>
-                        <option> 9 Horas Docente</option>
-                        <option> 10 Horas Docente</option>
+                    <select class="select-css" id='cantidad-horas' onchange="calcularMonto()">
+                        <option value='1'> 1 Hora Docente </option>
+                        <option value='2'> 2 Horas Docente </option>
+                        <option value='3'> 3 Horas Docente </option>
+                        <option value='4'> 4 Horas Docente</option>
+                        <option value='5'> 5 Horas Docente</option>
+                        <option value='6'> 6 Horas Docente</option>
+                        <option value='7'> 7 Horas Docente</option>
+                        <option value='8'> 8 Horas Docente</option>
+                        <option value='9'>9 Horas Docente</option>
+                        <option value='10'> 10 Horas Docente</option>
 
                     </select >
                     <br>
                     <br>
-                    <p> Monto a depositar en $ :<output id="resultado" for="valorhs cantidad"></output></p>
+                    <p> Monto a depositar: $<output id="resultado" for="valorhs cantidad"></output></p>
                   
                     <br>
                     <br>
@@ -55,15 +55,75 @@
                 <br>
                 <br>
                 <p1><a href="https://www.brou.com.uy">  e-Banco </a></p1>
-                <p1><a href="/consultas/consulta_alumno.html"> Comprar</a></p1>
+                <p1><a href="#" onclick="comprar()"> Comprar</a></p1>
                 <br>
                 <br>
                 <br>
                 <br>
                 <div>
                 <br>
-                <p3><a href="/consultas/consulta_alumno.html"> Regresar </a></p3>   
+                <p3><a href="/consultas/consulta_alumno.html" id='regresar'> Regresar </a></p3>   
                 <p4><a href="/index.html">Salir</a></p4> 
             </div>
 </body>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    const token = localStorage.getItem('token');
+    let valorHora;
+
+    document.getElementById('regresar').setAttribute('href', `/consultas/consulta_alumno.html?id=${id}`)
+
+    async function datosProfesor() { 
+        if(token) { 
+            const respuesta = await fetch('/api/users/profesor/'+id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            const datos = await respuesta.json();
+            console.log(datos)
+            valorHora = datos[0].valor_hora
+            calcularMonto()
+        }
+    }
+    datosProfesor()
+
+    function calcularMonto() {
+        const cantidad = document.getElementById('cantidad-horas').value;
+        document.getElementById('resultado').textContent = valorHora * cantidad;
+    }
+
+    async function comprar(e) {
+        const cantidad = document.getElementById('cantidad-horas').value;
+        const monto = cantidad * valorHora;
+        const comprobante = document.getElementById('numero').value;
+        let horasDisponibles;
+
+        const body = {
+            cantidad,
+            monto,
+            comprobante
+        }
+        console.log(body)
+        alert("Horas Compradas")
+        const respuesta = await fetch('/api/users/horasDocente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify(body)
+        })
+
+        
+        
+    }
+
+
+</script>
 </html>

@@ -49,11 +49,6 @@
 
             const datos = await respuesta.json();
 
-            if(datos.auth && datos.tipo_usuario === 'Alumno') {
-                obtenerUsuarios();
-            } else {
-                window.location.href = "/"
-            }
         } else {
             window.location.href = "/"
         }
@@ -61,11 +56,12 @@
 
     verificarToken();
 
+    obtenerUsuarios()
     async function obtenerUsuarios() {
         const token = localStorage.getItem('token');
         
         //Obtener usuarios
-        const respuesta = await fetch('/api/users/alumnos', {
+        const respuesta = await fetch('/api/users/horasDocente', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +89,7 @@
 
             //Agregar la columna cantidad de Hs.
             const columnaCantidadHoras = document.createElement('td');
-            columnaCantidadHoras.textContent = usuario.cantidad_horas;
+            columnaCantidadHoras.textContent = usuario.cantidad;
             lineaTabla.appendChild(columnaCantidadHoras);
 
             //Agregar la columna de monto
@@ -103,19 +99,35 @@
 
             //Agregar la columna numero comprobante
             const columnaNumeroComprobante = document.createElement('td');
-            columnaNumeroComprobante.textContent = usuario.numero_comprobante;
+            columnaNumeroComprobante.textContent = usuario.comprobante;
             lineaTabla.appendChild(columnaNumeroComprobante);
 
             //Agregar la columna fecha
             const columnaFecha = document.createElement('td');
-            columnaFecha .textContent = usuario.fecha;
+            columnaFecha .textContent = new Date(usuario.fecha).toDateString();
             lineaTabla.appendChild(columnaFecha );
          
             //Crear el boton de acreditar
             const botonAcreditar = document.createElement('button');
             botonAcreditar.textContent = 'Acreditar';
-            botonAcreditar.addEventListener('click', function() {
-                window.location.href = `/consultas/consulta_alumno.html?id=${usuario.id}`;
+            botonAcreditar.addEventListener('click', async () => {
+                const body = {
+                    cantidad: usuario.cantidad,
+                    alumno: usuario.alumno,
+                    horasId: usuario.horasid
+                }
+
+                await fetch('/api/users/acreditarHoras', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    },
+                    body: JSON.stringify(body)
+                })
+
+                alert('Horas acreditadas');
+                window.location.reload();
             })
             botonAcreditar.setAttribute('href', `/consultas/selecciona_profesor.html`);
             botonAcreditar.classList.add("boton-acreditar");
