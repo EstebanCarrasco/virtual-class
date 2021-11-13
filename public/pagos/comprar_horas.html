@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Comprar Horas Docente</title>
+    <link rel="stylesheet" href="stylecomprarhs.css">
+</head>
+<body>
+
+        <h1>Comprar Horas Docente</h1>
+
+        <br>
+        <br>
+        <br>
+            
+                
+                <form>
+                    <p>Selecciona Cantidad de Horas </p>
+                    <select class="select-css" id='cantidad-horas' onchange="calcularMonto()">
+                        <option value='1'> 1 Hora Docente </option>
+                        <option value='2'> 2 Horas Docente </option>
+                        <option value='3'> 3 Horas Docente </option>
+                        <option value='4'> 4 Horas Docente</option>
+                        <option value='5'> 5 Horas Docente</option>
+                        <option value='6'> 6 Horas Docente</option>
+                        <option value='7'> 7 Horas Docente</option>
+                        <option value='8'> 8 Horas Docente</option>
+                        <option value='9'>9 Horas Docente</option>
+                        <option value='10'> 10 Horas Docente</option>
+
+                    </select >
+                    <br>
+                    <br>
+                    <p> Monto a depositar: $<output id="resultado" for="valorhs cantidad"></output></p>
+                  
+                    <br>
+                    <br>
+                    <br>
+                    
+                    <label for="numero">Numero de comprobante:</label>
+                    <input type="text" id="numero"  name="user_numero" />
+
+                </form>
+                <br>
+                <br>
+                <br>
+               
+                <p>Cuenta para deposito <span style="color: red;">e-Brou 989786578 - 0002</span><br>
+                Sr. Usuario al confirmar su Deposito se acreditaran las horas compradas<br>
+                Muchas Gracias por su confianza </p>
+            
+                <br>
+                <br>
+                <br>
+                <p1><a href="https://www.brou.com.uy">  e-Banco </a></p1>
+                <p1><a href="#" onclick="comprar()"> Comprar</a></p1>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div>
+                <br>
+                <p3><a href="/consultas/consulta_alumno.html" id='regresar'> Regresar </a></p3>   
+                <p4><a href="/index.html">Salir</a></p4> 
+            </div>
+</body>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    const token = localStorage.getItem('token');
+    let valorHora;
+
+    document.getElementById('regresar').setAttribute('href', `/consultas/consulta_alumno.html?id=${id}`)
+
+    async function datosProfesor() { 
+        if(token) { 
+            const respuesta = await fetch('/api/users/profesor/'+id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            const datos = await respuesta.json();
+            console.log(datos)
+            valorHora = datos[0].valor_hora
+            calcularMonto()
+        }
+    }
+    datosProfesor()
+
+    function calcularMonto() {
+        const cantidad = document.getElementById('cantidad-horas').value;
+        document.getElementById('resultado').textContent = valorHora * cantidad;
+    }
+
+    async function comprar(e) {
+        const cantidad = document.getElementById('cantidad-horas').value;
+        const monto = cantidad * valorHora;
+        const comprobante = document.getElementById('numero').value;
+        let horasDisponibles;
+
+        const body = {
+            cantidad,
+            monto,
+            comprobante
+        }
+        console.log(body)
+        alert("Horas Compradas")
+        const respuesta = await fetch('/api/users/horasDocente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify(body)
+        })
+
+        
+        
+    }
+
+
+</script>
+</html>

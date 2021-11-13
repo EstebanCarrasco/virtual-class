@@ -45,6 +45,14 @@
                     listaAlumnosElement.textContent = 'Alumnos';
                     listaAlumnosElement.classList.add('nav-enlace');
                     document.querySelector('nav').prepend(listaAlumnosElement);
+
+                    //boton lleva a la lista de pagos
+                    const listaPagosElement = document.createElement('a');
+                    listaPagosElement.setAttribute('href', '/pagos/lista_pagos.html');
+                    listaPagosElement.textContent = 'Pagos';
+                    listaPagosElement.classList.add('nav-enlace');
+                    document.querySelector('nav').prepend(listaPagosElement);
+
                 }
 
                 if(datos.tipo_usuario === 'Alumno') {
